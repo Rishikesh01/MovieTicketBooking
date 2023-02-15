@@ -30,6 +30,10 @@ public class User implements UserDetails {
     @ToString.Exclude
     private List<Booking> bookings;
 
+    @OneToMany(mappedBy = "fkUser")
+    @ToString.Exclude
+    private List<Lock> locks;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

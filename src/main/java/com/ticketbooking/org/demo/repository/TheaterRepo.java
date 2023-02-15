@@ -1,4 +1,10 @@
 package com.ticketbooking.org.demo.repository;
 
-public interface TheaterRepo {
+import com.ticketbooking.org.demo.model.Theater;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TheaterRepo extends JpaRepository<Theater,Integer> {
+
+
+
 }

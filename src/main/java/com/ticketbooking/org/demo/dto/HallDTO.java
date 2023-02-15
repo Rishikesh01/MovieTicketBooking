@@ -14,5 +14,5 @@ public class HallDTO {
 
     private int columns;
 
-    private List<List<SeatDTO>> seatDTO;
+    private List<SeatDTO> seatDTO;
 }

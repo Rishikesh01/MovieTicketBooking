@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class ShowSeat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(columnDefinition = "integer default '0'")
     private int status;
 
@@ -24,5 +27,8 @@ public class ShowSeat {
     private int fkSeats;
 
     private int fkBookings;
+
+    @OneToMany(mappedBy = "fkShowSeat")
+    private List<Lock> lock;
 
 }

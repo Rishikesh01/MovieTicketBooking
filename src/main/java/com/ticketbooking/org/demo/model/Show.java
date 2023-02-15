@@ -27,7 +27,7 @@ public class Show {
 
     private LocalDateTime startTime;
 
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 
     @OneToMany(mappedBy = "fkShow")
     private List<ShowSeat> showSeats;
