@@ -1,10 +1,7 @@
 package com.ticketbooking.org.demo.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,12 +17,14 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int fkHall;
+    @ManyToOne
+    @JoinColumn(name = "fk_hall")
+    private Hall fkHall;
 
     private int rowNumber;
 
     private String seatNumber;
 
-    @OneToMany(mappedBy = "fkSeats")
+    @OneToMany(mappedBy = "fkSeats",cascade = CascadeType.ALL)
     private List<ShowSeat> showSeats;
 }

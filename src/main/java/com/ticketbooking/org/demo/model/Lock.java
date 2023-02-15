@@ -25,6 +25,6 @@ public class Lock {
     private int fkUser;
     private int fkShowSeat;
 
-    private LocalDateTime exp;
+    private Instant exp;
 
 }

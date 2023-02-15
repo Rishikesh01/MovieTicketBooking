@@ -19,7 +19,9 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int fkTheater;
+    @ManyToOne
+    @JoinColumn(name = "fk_theater")
+    private Theater fkTheater;
 
 
     private String name;
@@ -30,10 +32,10 @@ public class Hall {
 
     private int columns;
 
-    @OneToMany(mappedBy = "fkHall")
+    @OneToMany(mappedBy = "fkHall",cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    @OneToMany(mappedBy = "fkHall")
+    @OneToMany(mappedBy = "fkHall",cascade = CascadeType.ALL)
     private List<Show> shows;
 
 }

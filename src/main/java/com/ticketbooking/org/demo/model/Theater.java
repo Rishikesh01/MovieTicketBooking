@@ -23,7 +23,7 @@ public class Theater {
     private int numberOfHalls;
 
 
-    @OneToMany(mappedBy = "fkTheater")
+    @OneToMany(mappedBy = "fkTheater",cascade = CascadeType.ALL)
     private List<Hall> halls;
 
 

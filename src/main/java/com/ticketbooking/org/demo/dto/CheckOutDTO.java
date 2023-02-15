@@ -1,20 +1,12 @@
 package com.ticketbooking.org.demo.dto;
 
-
 import lombok.Data;
 
 import java.util.ArrayList;
 
 @Data
-public class BookingDTO {
-
-    private int fkHall;
-
-    private int fkShowID;
-    private int fkMovieID;
-
+public class CheckOutDTO {
     private String email;
 
     private ArrayList<Integer> fkSeats;
-
 }

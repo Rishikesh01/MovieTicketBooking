@@ -29,9 +29,9 @@ public class Show {
 
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "fkShow")
+    @OneToMany(mappedBy = "fkShow",cascade = CascadeType.ALL)
     private List<ShowSeat> showSeats;
 
-    @OneToMany(mappedBy = "fkShow")
+    @OneToMany(mappedBy = "fkShow",cascade = CascadeType.ALL)
     private List<Booking> bookings;
 }

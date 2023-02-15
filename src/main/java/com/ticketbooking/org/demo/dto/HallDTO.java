@@ -1,6 +1,7 @@
 package com.ticketbooking.org.demo.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -8,11 +9,13 @@ import java.util.List;
 @Data
 public class HallDTO {
     private String name;
+
+    @JsonProperty("total_seats")
     private int totalSeats;
 
     private int rows;
 
     private int columns;
 
-    private List<SeatDTO> seatDTO;
+    private List<SeatDTO> seats;
 }
