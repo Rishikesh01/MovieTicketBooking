@@ -1,5 +1,6 @@
 package com.ticketbooking.org.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +21,13 @@ public class Show {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int fkHall;
+    @ManyToOne
+    @JoinColumn(name = "fk_hall")
+    private Hall fkHall;
 
-    private int fkMovie;
+    @ManyToOne
+    @JoinColumn(name = "fk_movie")
+    private Movie fkMovie;
     private LocalDate date;
 
     private LocalDateTime startTime;

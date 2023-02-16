@@ -6,6 +6,7 @@ import com.ticketbooking.org.demo.dto.NewMovieDTO;
 import com.ticketbooking.org.demo.dto.SeatDTO;
 import com.ticketbooking.org.demo.dto.TheaterDTO;
 import com.ticketbooking.org.demo.model.*;
+import com.ticketbooking.org.demo.repository.HallRepo;
 import com.ticketbooking.org.demo.repository.MovieRepo;
 import com.ticketbooking.org.demo.repository.TheaterRepo;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TheaterService {
+
+    private final HallRepo hallRepo;
     private final MovieRepo movieRepo;
     private final TheaterRepo theaterRepo;
 
@@ -42,18 +45,21 @@ public class TheaterService {
         theaterRepo.save(theater);
     }
 
-    public void addNewMovie(NewMovieDTO movieDTO) {
+    public void addNewMovie(NewMovieDTO movieDTO) throws Exception {
         Movie movie = new Movie();
         movie.setName(movieDTO.getMovieName());
         movie.setPrice(movieDTO.getPrice());
-        movie.setShows(movieDTO.getShows().parallelStream().map(e -> {
+        var list = movieDTO.getShows().parallelStream().map(e -> {
             Show show = new Show();
             show.setDate(e.getDate());
-            show.setFkMovie(e.getFkHall());
+            show.setFkHall(new Hall(movieDTO.getFkHall(),null,null,0,0,0,null,null));
             show.setStartTime(e.getStartTime());
             show.setEndTime(e.getEndTime());
             return show;
-        }).toList());
+        }).toList();
+        movie.setFkTheater(new Theater(movieDTO.getFkTheater(), null,0,null,null));
+        movie.setShows(list);
+        movie.getShows().parallelStream().forEach(e->e.setFkMovie(movie));
         movieRepo.save(movie);
     }
 

@@ -30,7 +30,11 @@ public class TheaterController {
 
     @PostMapping("/add/movie")
     public ResponseEntity<HttpStatus> addNewMovieToTheater(@RequestBody NewMovieDTO movie){
-        theaterService.addNewMovie(movie);
+        try {
+            theaterService.addNewMovie(movie);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.accepted().build();
     }
 }

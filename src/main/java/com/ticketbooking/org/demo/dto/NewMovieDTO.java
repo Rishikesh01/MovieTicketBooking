@@ -1,6 +1,7 @@
 package com.ticketbooking.org.demo.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -8,10 +9,13 @@ import java.util.List;
 @Data
 public class NewMovieDTO {
 
-    private String theaterName;
+    @JsonProperty("fk_theater")
+    private int fkTheater;
 
-    private String hallName;
+    @JsonProperty("fk_hall")
+    private int fkHall;
 
+    @JsonProperty("movie_name")
     private String movieName;
 
     private List<ShowsDTO> shows;

@@ -22,6 +22,10 @@ public class Movie {
 
     private double price;
 
-    @OneToMany(mappedBy = "fkMovie")
+    @ManyToOne
+    @JoinColumn(name = "fk_theater")
+    private Theater fkTheater;
+
+    @OneToMany(mappedBy = "fkMovie",cascade = CascadeType.ALL)
     private List<Show> shows;
 }
