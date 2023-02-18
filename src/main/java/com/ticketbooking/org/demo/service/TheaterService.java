@@ -69,8 +69,8 @@ public class TheaterService {
         movie.getShows().parallelStream().forEach(e->e.setFkMovie(movie));
         movieRepo.save(movie);
 
-        var list1 = movie.getShows().parallelStream().map(
-                e-> hall.getSeats().parallelStream().map(
+        var list1 = movie.getShows().stream().map(
+                e-> hall.getSeats().stream().map(
                          m->{
                              var showSeats = new ShowSeat();
                              showSeats.setFkSeats(m);
@@ -78,8 +78,8 @@ public class TheaterService {
                              return showSeats;
                          }
                  ).toList()
-        ).flatMap(List::stream).toList();
-        showSeatsRepo.saveAll(list1);
+        ).toList();
+        showSeatsRepo.saveAll(list1.parallelStream().flatMap(List::stream).toList());
 
     }
 

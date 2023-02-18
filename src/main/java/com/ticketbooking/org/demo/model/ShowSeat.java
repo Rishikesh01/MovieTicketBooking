@@ -35,7 +35,6 @@ public class ShowSeat {
     @JoinColumn(name = "fk_booking")
     private Booking fkBookings;
 
-    @OneToMany(mappedBy = "fkShowSeat")
-    private List<Lock> lock;
+
 
 }

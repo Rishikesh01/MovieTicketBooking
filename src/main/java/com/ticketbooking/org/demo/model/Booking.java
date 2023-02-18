@@ -20,9 +20,12 @@ public class Booking {
 
     private int numberOfSeats;
 
-    private int fkUser;
 
-    private int fkShow;
+    @ManyToOne
+    private User fkUser;
+
+    @ManyToOne
+    private Show fkShow;
 
     @OneToMany(mappedBy = "fkBookings")
     private List<ShowSeat> showSeats;

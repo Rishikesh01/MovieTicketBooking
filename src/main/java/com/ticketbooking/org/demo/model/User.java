@@ -22,6 +22,7 @@ public class User implements UserDetails {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
@@ -30,9 +31,6 @@ public class User implements UserDetails {
     @ToString.Exclude
     private List<Booking> bookings;
 
-    @OneToMany(mappedBy = "fkUser")
-    @ToString.Exclude
-    private List<Lock> locks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

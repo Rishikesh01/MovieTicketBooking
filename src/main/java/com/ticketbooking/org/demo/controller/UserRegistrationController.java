@@ -6,13 +6,12 @@ import com.ticketbooking.org.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-@RestController("/v1/user")
+@RestController
+@RequestMapping("/v1/user")
 public class UserRegistrationController {
    private final UserService userService;
 
@@ -21,7 +20,7 @@ public class UserRegistrationController {
        if(userService.isUserPresent(userDTO)){
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user already exists");
        }
-
+        userService.save(userDTO);
        return ResponseEntity.ok("Success");
    }
 

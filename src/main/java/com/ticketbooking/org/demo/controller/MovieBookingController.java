@@ -1,8 +1,8 @@
 package com.ticketbooking.org.demo.controller;
 
 
-import com.ticketbooking.org.demo.dto.owner.CheckOutDTO;
 import com.ticketbooking.org.demo.dto.user.BookingDTO;
+import com.ticketbooking.org.demo.dto.user.LockMovieDTO;
 import com.ticketbooking.org.demo.dto.user.MovieHallSeat;
 import com.ticketbooking.org.demo.dto.user.MoviesDTO;
 import com.ticketbooking.org.demo.service.BookingService;
@@ -22,24 +22,29 @@ public class MovieBookingController {
     private final MovieService movieService;
     private final BookingService bookingService;
     @PostMapping("/temp/book")
-    public  ResponseEntity<HttpStatus> tempLock(@RequestBody CheckOutDTO checkOutDTO){
+    public  ResponseEntity<HttpStatus> tempLock(@RequestBody LockMovieDTO lockMovieDTO){
         try {
-            bookingService.bookingTempLock(checkOutDTO);
+           if( bookingService.bookingTempLock(lockMovieDTO)){
+                return ResponseEntity.status(HttpStatus.OK).build();
+           }
+           return ResponseEntity.status(HttpStatus.LOCKED).build();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        return ResponseEntity.accepted().build();
     }
     @PostMapping("/book")
     public ResponseEntity<HttpStatus> startBooking(@RequestBody BookingDTO bookingDTO){
         try {
-            bookingService.bookSeat(bookingDTO);
+            if(bookingService.bookSeat(bookingDTO)){
+                return ResponseEntity.ok(HttpStatus.OK);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
-        return ResponseEntity.accepted().build();
 
     }
 
