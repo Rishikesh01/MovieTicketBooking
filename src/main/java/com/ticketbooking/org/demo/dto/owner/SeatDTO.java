@@ -1,4 +1,4 @@
-package com.ticketbooking.org.demo.dto;
+package com.ticketbooking.org.demo.dto.owner;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

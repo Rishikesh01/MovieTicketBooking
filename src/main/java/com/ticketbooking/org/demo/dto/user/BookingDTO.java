@@ -1,4 +1,4 @@
-package com.ticketbooking.org.demo.dto;
+package com.ticketbooking.org.demo.dto.user;
 
 
 import lombok.Data;

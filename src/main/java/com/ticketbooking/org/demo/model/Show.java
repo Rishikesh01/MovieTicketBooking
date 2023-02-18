@@ -34,7 +34,7 @@ public class Show {
 
     private LocalDateTime endTime;
 
-    @OneToMany(mappedBy = "fkShow",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkShow",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ShowSeat> showSeats;
 
     @OneToMany(mappedBy = "fkShow",cascade = CascadeType.ALL)

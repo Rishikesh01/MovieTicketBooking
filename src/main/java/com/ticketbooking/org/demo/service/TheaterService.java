@@ -1,14 +1,16 @@
 package com.ticketbooking.org.demo.service;
 
 
-import com.ticketbooking.org.demo.dto.HallDTO;
-import com.ticketbooking.org.demo.dto.NewMovieDTO;
-import com.ticketbooking.org.demo.dto.SeatDTO;
-import com.ticketbooking.org.demo.dto.TheaterDTO;
+import com.ticketbooking.org.demo.dto.owner.HallDTO;
+import com.ticketbooking.org.demo.dto.owner.NewMovieDTO;
+import com.ticketbooking.org.demo.dto.owner.SeatDTO;
+import com.ticketbooking.org.demo.dto.owner.TheaterDTO;
 import com.ticketbooking.org.demo.model.*;
 import com.ticketbooking.org.demo.repository.HallRepo;
 import com.ticketbooking.org.demo.repository.MovieRepo;
+import com.ticketbooking.org.demo.repository.ShowSeatsRepo;
 import com.ticketbooking.org.demo.repository.TheaterRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TheaterService {
 
+    private final ShowSeatsRepo showSeatsRepo;
     private final HallRepo hallRepo;
     private final MovieRepo movieRepo;
     private final TheaterRepo theaterRepo;
@@ -45,22 +48,39 @@ public class TheaterService {
         theaterRepo.save(theater);
     }
 
+    @Transactional
     public void addNewMovie(NewMovieDTO movieDTO) throws Exception {
+        var hall = hallRepo.findById(movieDTO.getFkHall()).orElseThrow(()->new Exception("illegal hall key"));
         Movie movie = new Movie();
         movie.setName(movieDTO.getMovieName());
         movie.setPrice(movieDTO.getPrice());
         var list = movieDTO.getShows().parallelStream().map(e -> {
             Show show = new Show();
             show.setDate(e.getDate());
-            show.setFkHall(new Hall(movieDTO.getFkHall(),null,null,0,0,0,null,null));
+            show.setFkHall(hall);
             show.setStartTime(e.getStartTime());
             show.setEndTime(e.getEndTime());
             return show;
         }).toList();
-        movie.setFkTheater(new Theater(movieDTO.getFkTheater(), null,0,null,null));
+        List<Theater> theaters = new ArrayList<>();
+        theaters.add(new Theater(movieDTO.getFkTheater(), null,0,null,null));
+        movie.setFkTheater(theaters);
         movie.setShows(list);
         movie.getShows().parallelStream().forEach(e->e.setFkMovie(movie));
         movieRepo.save(movie);
+
+        var list1 = movie.getShows().parallelStream().map(
+                e-> hall.getSeats().parallelStream().map(
+                         m->{
+                             var showSeats = new ShowSeat();
+                             showSeats.setFkSeats(m);
+                             showSeats.setFkShow(e);
+                             return showSeats;
+                         }
+                 ).toList()
+        ).flatMap(List::stream).toList();
+        showSeatsRepo.saveAll(list1);
+
     }
 
     private boolean minSeatsCheck(List<SeatDTO> seatDTOS) {
@@ -79,6 +99,7 @@ public class TheaterService {
             hall.setName(dto.getName());
             hall.setRows(dto.getRows());
             hall.setColumns(dto.getColumns());
+            hall.setTotalSeats(dto.getTotalSeats());
             List<Seat> seatList = new ArrayList<>();
             for (SeatDTO seat : dto.getSeats()) {
                 for (String s : seat.getSeats()) {

@@ -1,8 +1,8 @@
 package com.ticketbooking.org.demo.service;
 
 
-import com.ticketbooking.org.demo.dto.BookingDTO;
-import com.ticketbooking.org.demo.dto.CheckOutDTO;
+import com.ticketbooking.org.demo.dto.user.BookingDTO;
+import com.ticketbooking.org.demo.dto.owner.CheckOutDTO;
 import com.ticketbooking.org.demo.model.Booking;
 import com.ticketbooking.org.demo.model.Lock;
 import com.ticketbooking.org.demo.model.ShowSeat;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service

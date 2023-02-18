@@ -22,11 +22,18 @@ public class ShowSeat {
     @Column(columnDefinition = "integer default '0'")
     private int status;
 
-    private int fkShow;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_show")
+    private Show fkShow;
 
-    private int fkSeats;
 
-    private int fkBookings;
+    @ManyToOne
+    @JoinColumn(name = "fk_seats")
+    private Seat fkSeats;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_booking")
+    private Booking fkBookings;
 
     @OneToMany(mappedBy = "fkShowSeat")
     private List<Lock> lock;

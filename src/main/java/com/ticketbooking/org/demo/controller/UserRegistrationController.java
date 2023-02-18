@@ -1,7 +1,7 @@
 package com.ticketbooking.org.demo.controller;
 
 
-import com.ticketbooking.org.demo.dto.UserDTO;
+import com.ticketbooking.org.demo.dto.user.UserDTO;
 import com.ticketbooking.org.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

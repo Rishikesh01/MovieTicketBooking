@@ -28,7 +28,7 @@ public class Theater {
     @OneToMany(mappedBy = "fkTheater",cascade = CascadeType.ALL)
     private List<Hall> halls;
 
-    @OneToMany(mappedBy = "fkTheater",cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     private List<Movie> movies;
 
 }

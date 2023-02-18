@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,9 +23,8 @@ public class Movie {
 
     private double price;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_theater")
-    private Theater fkTheater;
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    private List<Theater> fkTheater;
 
     @OneToMany(mappedBy = "fkMovie",cascade = CascadeType.ALL)
     private List<Show> shows;

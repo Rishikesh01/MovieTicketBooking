@@ -1,7 +1,7 @@
 package com.ticketbooking.org.demo.service;
 
 
-import com.ticketbooking.org.demo.dto.UserDTO;
+import com.ticketbooking.org.demo.dto.user.UserDTO;
 import com.ticketbooking.org.demo.model.User;
 import com.ticketbooking.org.demo.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 

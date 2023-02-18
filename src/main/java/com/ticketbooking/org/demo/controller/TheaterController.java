@@ -1,8 +1,8 @@
 package com.ticketbooking.org.demo.controller;
 
 
-import com.ticketbooking.org.demo.dto.NewMovieDTO;
-import com.ticketbooking.org.demo.dto.TheaterDTO;
+import com.ticketbooking.org.demo.dto.owner.NewMovieDTO;
+import com.ticketbooking.org.demo.dto.owner.TheaterDTO;
 import com.ticketbooking.org.demo.service.TheaterService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,6 +33,7 @@ public class TheaterController {
         try {
             theaterService.addNewMovie(movie);
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.accepted().build();
