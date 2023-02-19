@@ -49,8 +49,13 @@ public class MovieBookingController {
     }
 
     @GetMapping("/{movieName}")
-    public ResponseEntity<MoviesDTO> getAllMovies(@PathVariable("movieName") String movieName) throws Exception {
-        var movies = movieService.getListOfTheater(movieName);
+    public ResponseEntity<MoviesDTO> getAllMovies(@PathVariable("movieName") String movieName)  {
+        MoviesDTO movies = null;
+        try {
+            movies = movieService.getListOfTheater(movieName);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.ok(movies);
     }
 

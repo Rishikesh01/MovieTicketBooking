@@ -22,6 +22,8 @@ repositories {
 dependencies {
 
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
+    implementation("org.jetbrains:annotations:23.0.0")
+    implementation("org.jetbrains:annotations:23.0.0")
 
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
     implementation("org.springframework.boot:spring-boot-starter-security")

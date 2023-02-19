@@ -4,18 +4,18 @@ package com.ticketbooking.org.demo.service;
 import com.ticketbooking.org.demo.dto.user.BookingDTO;
 import com.ticketbooking.org.demo.dto.user.LockMovieDTO;
 import com.ticketbooking.org.demo.model.Booking;
-import com.ticketbooking.org.demo.model.Show;
 import com.ticketbooking.org.demo.model.ShowSeat;
-import com.ticketbooking.org.demo.repository.*;
+import com.ticketbooking.org.demo.repository.BookingRepo;
+import com.ticketbooking.org.demo.repository.ShowRepo;
+import com.ticketbooking.org.demo.repository.ShowSeatsRepo;
+import com.ticketbooking.org.demo.repository.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +23,7 @@ public class BookingService {
 
     private final UserRepo userRepo;
 
-    private final  ShowRepo showRepo;
+    private final ShowRepo showRepo;
     private final BookingRepo bookingRepo;
 
     private final ShowSeatsRepo showSeatsRepo;
@@ -35,16 +35,20 @@ public class BookingService {
     public boolean bookSeat(BookingDTO bookingDTO) throws Exception {
         var user = userRepo.findByEmail(bookingDTO.getEmail()).orElseThrow(() -> new Exception("user not found"));
         var showSeat = showSeatsRepo.findAllById(bookingDTO.getSeatIDs());
+        List<Integer> seatIDs = new ArrayList<>();
         for (ShowSeat seat : showSeat) {
             if (seat.getStatus() == 1 || (map.get(seat.getId()).getExp().isAfter(Instant.now()) && !map.get(seat.getId()).getEmail().equals(bookingDTO.getEmail()))) {
+
                 return false;
             }
+            seatIDs.add(seat.getId());
         }
+        seatIDs.forEach(map::remove);
         showSeat.parallelStream().forEach(e -> e.setStatus(1));
         showSeatsRepo.saveAll(showSeat);
         Booking booking = new Booking();
         booking.setNumberOfSeats(showSeat.size());
-        var show = showRepo.findById(bookingDTO.getShowID()).orElseThrow(()->new Exception("illegal show key"));
+        var show = showRepo.findById(bookingDTO.getShowID()).orElseThrow(() -> new Exception("illegal show key"));
         System.out.println(show.toString());
         booking.setFkShow(show);
         booking.setFkUser(user);
@@ -53,7 +57,7 @@ public class BookingService {
     }
 
     public boolean bookingTempLock(LockMovieDTO lockMovieDTO) throws Exception {
-        var user = userRepo.findByEmail(lockMovieDTO.getEmail()).orElseThrow(() -> new Exception("user not found"));
+        userRepo.findByEmail(lockMovieDTO.getEmail()).orElseThrow(() -> new Exception("user not found"));
         var nonLockList = lockMovieDTO.getSeatIDs().parallelStream().filter(e -> !map.containsKey(e) || !map.get(e).getExp().isAfter(Instant.now())).toList();
         if (nonLockList.size() != lockMovieDTO.getSeatIDs().size()) {
             return false;

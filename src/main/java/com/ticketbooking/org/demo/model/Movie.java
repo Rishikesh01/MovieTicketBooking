@@ -1,19 +1,19 @@
 package com.ticketbooking.org.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@DynamicInsert
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,11 @@ public class Movie {
 
     private String name;
 
-    private double price;
+    //private double price;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    private List<Theater> fkTheater;
+
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<MovieTheaters> movieTheaters;
 
     @OneToMany(mappedBy = "fkMovie",cascade = CascadeType.ALL)
     private List<Show> shows;

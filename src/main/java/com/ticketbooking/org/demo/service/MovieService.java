@@ -21,18 +21,17 @@ import java.util.stream.Collectors;
 public class MovieService {
     private final MovieRepo movieRepo;
 
-    private final ShowSeatsRepo showSeatsRepo;
     private final ShowRepo showRepo;
 
     public MoviesDTO getListOfTheater(String name) throws Exception {
-        var movie = movieRepo.findByNameLike(name).orElseThrow(() -> new Exception("null"));
+        var movie = movieRepo.findByNameContaining(name).orElseThrow(() -> new Exception("null"));
         MoviesDTO moviesDTO = new MoviesDTO();
         moviesDTO.setId(movie.getId());
-        moviesDTO.setName(name);
-        var list = movie.getFkTheater().parallelStream().collect(Collectors.toSet()).parallelStream().map(e -> {
+        moviesDTO.setName(movie.getName());
+        var list = movie.getMovieTheaters().parallelStream().collect(Collectors.toSet()).parallelStream().map(e -> {
             var theater = new TheatersDTO();
-            theater.setId(e.getId());
-            theater.setShows(movie.getShows().stream().filter(m -> m.getFkHall().getFkTheater().getId() == e.getId()).map(m -> {
+            theater.setId(e.getTheater().getId());
+            theater.setShows(movie.getShows().stream().filter(m -> m.getFkHall().getFkTheater().getId() == e.getTheater().getId()).map(m -> {
                 var show = new ShowsDTO();
                 show.setId(m.getId());
                 show.setHallID(m.getFkHall().getId());
