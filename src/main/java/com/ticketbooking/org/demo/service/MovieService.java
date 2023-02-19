@@ -1,19 +1,19 @@
 package com.ticketbooking.org.demo.service;
 
 
-import com.ticketbooking.org.demo.dto.user.MovieHallSeat;
+import com.ticketbooking.org.demo.dto.user.MovieHallSeatsDTO;
 import com.ticketbooking.org.demo.dto.user.MoviesDTO;
 import com.ticketbooking.org.demo.dto.user.ShowsDTO;
 import com.ticketbooking.org.demo.dto.user.TheatersDTO;
+import com.ticketbooking.org.demo.model.Movie;
+import com.ticketbooking.org.demo.model.MovieTheaters;
 import com.ticketbooking.org.demo.repository.MovieRepo;
 import com.ticketbooking.org.demo.repository.ShowRepo;
-import com.ticketbooking.org.demo.repository.ShowSeatsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -28,7 +28,13 @@ public class MovieService {
         MoviesDTO moviesDTO = new MoviesDTO();
         moviesDTO.setId(movie.getId());
         moviesDTO.setName(movie.getName());
-        var list = movie.getMovieTheaters().parallelStream().collect(Collectors.toSet()).parallelStream().map(e -> {
+        var list = toTheatersDTOS(movie.getMovieTheaters(), movie);
+        moviesDTO.setTheater(list);
+        return moviesDTO;
+    }
+
+    private List<TheatersDTO> toTheatersDTOS(List<MovieTheaters> movieTheaters, Movie movie) {
+        return movieTheaters.stream().map(e -> {
             var theater = new TheatersDTO();
             theater.setId(e.getTheater().getId());
             theater.setShows(movie.getShows().stream().filter(m -> m.getFkHall().getFkTheater().getId() == e.getTheater().getId()).map(m -> {
@@ -41,27 +47,20 @@ public class MovieService {
             }).toList());
             return theater;
         }).toList();
-
-
-        moviesDTO.setTheater(list);
-
-        return moviesDTO;
     }
 
-    public Optional<List<MovieHallSeat>> getShowSeats(int showID) {
+    public Optional<List<MovieHallSeatsDTO>> getShowSeats(int showID) {
         var show = showRepo.findById(showID);
         if (show.isEmpty()) {
             return Optional.empty();
         }
-        var seats = show.get().getShowSeats().parallelStream().map(
-                e -> {
-                    var hallSeats = new MovieHallSeat();
-                    hallSeats.setId(e.getId());
-                    hallSeats.setRow(e.getFkSeats().getRowNumber());
-                    hallSeats.setSeat(e.getFkSeats().getSeatNumber());
-                    return hallSeats;
-                }
-        ).toList();
+        var seats = show.get().getShowSeats().stream().map(e -> {
+            var hallSeats = new MovieHallSeatsDTO();
+            hallSeats.setId(e.getId());
+            hallSeats.setRow(e.getFkSeats().getRowNumber());
+            hallSeats.setSeat(e.getFkSeats().getSeatNumber());
+            return hallSeats;
+        }).toList();
         return Optional.of(seats);
     }
 }

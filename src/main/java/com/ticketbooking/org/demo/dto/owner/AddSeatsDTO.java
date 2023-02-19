@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SeatDTO {
+public class AddSeatsDTO {
 
     @JsonProperty("row_number")
     private int rowNumber;

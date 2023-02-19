@@ -21,19 +21,18 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> result = userDetailsRepository.findByEmail(username);
-        if (result.isPresent())
-            return result.get();
+        if (result.isPresent()) return result.get();
         throw new UsernameNotFoundException("user with email " + username + " not found");
     }
 
-    public void   save(UserDTO userDTO){
+    public void save(UserDTO userDTO) {
         User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         userDetailsRepository.save(user);
     }
 
-    public boolean isUserPresent(UserDTO userDTO){
+    public boolean isUserPresent(UserDTO userDTO) {
         Optional<User> result = userDetailsRepository.findByEmail(userDTO.getEmail());
         return result.isPresent();
     }

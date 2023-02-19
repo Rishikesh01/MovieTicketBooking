@@ -1,9 +1,9 @@
 package com.ticketbooking.org.demo.controller;
 
 
-import com.ticketbooking.org.demo.dto.user.BookingDTO;
-import com.ticketbooking.org.demo.dto.user.LockMovieDTO;
-import com.ticketbooking.org.demo.dto.user.MovieHallSeat;
+import com.ticketbooking.org.demo.dto.user.BookMovieSeatsDTO;
+import com.ticketbooking.org.demo.dto.user.LockMovieSeatsDTO;
+import com.ticketbooking.org.demo.dto.user.MovieHallSeatsDTO;
 import com.ticketbooking.org.demo.dto.user.MoviesDTO;
 import com.ticketbooking.org.demo.service.BookingService;
 import com.ticketbooking.org.demo.service.MovieService;
@@ -22,27 +22,25 @@ public class MovieBookingController {
     private final MovieService movieService;
     private final BookingService bookingService;
     @PostMapping("/temp/book")
-    public  ResponseEntity<HttpStatus> tempLock(@RequestBody LockMovieDTO lockMovieDTO){
+    public  ResponseEntity<HttpStatus> tempBookSeats(@RequestBody LockMovieSeatsDTO lockMovieSeatsDTO){
         try {
-           if( bookingService.bookingTempLock(lockMovieDTO)){
+           if( bookingService.lockMovieSeats(lockMovieSeatsDTO)){
                 return ResponseEntity.status(HttpStatus.OK).build();
            }
            return ResponseEntity.status(HttpStatus.LOCKED).build();
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
     }
     @PostMapping("/book")
-    public ResponseEntity<HttpStatus> startBooking(@RequestBody BookingDTO bookingDTO){
+    public ResponseEntity<HttpStatus> bookSeats(@RequestBody BookMovieSeatsDTO bookMovieSeatsDTO){
         try {
-            if(bookingService.bookSeat(bookingDTO)){
+            if(bookingService.seatBooking(bookMovieSeatsDTO)){
                 return ResponseEntity.ok(HttpStatus.OK);
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -60,7 +58,7 @@ public class MovieBookingController {
     }
 
     @GetMapping("/seats/{showID}")
-    public ResponseEntity<List<MovieHallSeat>> getShowSeats(@PathVariable("showID")int showID){
+    public ResponseEntity<List<MovieHallSeatsDTO>> getShowSeats(@PathVariable("showID")int showID){
        var seats =  movieService.getShowSeats(showID);
         return seats.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }

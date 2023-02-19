@@ -18,6 +18,6 @@ public class NewMovieDTO {
     @JsonProperty("movie_name")
     private String movieName;
 
-    private List<ShowsDTO> shows;
+    private List<AddShowsDTO> shows;
     private double price;
 }

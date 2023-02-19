@@ -7,11 +7,15 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class TheaterDTO {
+public class NewHallDTO {
     private String name;
-    @JsonProperty("number_of_halls")
-    private int numberOfHalls;
 
-    private List<HallDTO> halls;
+    @JsonProperty("total_seats")
+    private int totalSeats;
 
+    private int rows;
+
+    private int columns;
+
+    private List<AddSeatsDTO> seats;
 }

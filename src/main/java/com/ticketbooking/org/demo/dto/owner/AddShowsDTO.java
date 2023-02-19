@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-public class ShowsDTO {
+public class AddShowsDTO {
 
     private LocalDate date;
 

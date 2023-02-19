@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class BookingDTO {
+public class LockMovieSeatsDTO {
+
     private String email;
 
     @JsonProperty("theater_id")
@@ -19,7 +19,8 @@ public class BookingDTO {
     @JsonProperty("hall_id")
     private int hallID;
 
-
+    @JsonIgnore
+    private Instant exp;
 
     @JsonProperty("show_id")
     private int showID;
