@@ -48,7 +48,7 @@ public class MovieBookingController {
 
     @GetMapping("/{movieName}")
     public ResponseEntity<MoviesDTO> getAllMovies(@PathVariable("movieName") String movieName)  {
-        MoviesDTO movies = null;
+        MoviesDTO movies;
         try {
             movies = movieService.getListOfTheater(movieName);
         } catch (Exception e) {
