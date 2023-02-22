@@ -63,5 +63,15 @@ public class MovieBookingController {
         return seats.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<MoviesDTO>> getAllMovies(){
+        try {
+            return ResponseEntity.ok(movieService.getAllMovies());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
 
 }

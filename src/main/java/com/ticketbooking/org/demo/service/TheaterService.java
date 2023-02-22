@@ -7,6 +7,7 @@ import com.ticketbooking.org.demo.model.*;
 import com.ticketbooking.org.demo.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -35,9 +36,14 @@ public class TheaterService {
         return true;
     }
 
-    public List<GetTheater> getTheaters(String name) {
-        var theater = theaterRepo.findByNameContaining(name);
+    public List<GetTheater> getAllTheater(){
+        var theater = theaterRepo.findAll();
 
+        return toGetTheaterList(theater);
+    }
+
+    @NotNull
+    private List<GetTheater> toGetTheaterList(List<Theater> theater) {
         return theater.stream().map(e -> {
             var getTheater = new GetTheater();
             getTheater.setId(e.getId());
@@ -51,6 +57,12 @@ public class TheaterService {
         }).toList();
     }
 
+    public List<GetTheater> getTheaterWithName(String name) {
+        var theater = theaterRepo.findByNameContaining(name);
+
+        return toGetTheaterList(theater);
+    }
+
     public void addNewTheater(NewTheaterDTO newTheaterDTO) {
         Theater theater = new Theater();
         theater.setName(newTheaterDTO.getName());
@@ -61,6 +73,9 @@ public class TheaterService {
         theaterRepo.save(theater);
     }
 
+    public void deleteMovieFromTheater(DeleteMovie deleteMovie){
+
+    }
 
     public void addNewMovie(NewMovieDTO movieDTO) throws Exception {
         var hall = hallRepo.findById(movieDTO.getFkHall()).orElseThrow(() -> new Exception("illegal hall key"));
@@ -153,4 +168,6 @@ public class TheaterService {
     }
 
 
+    public void updateMoviePrice(UpdateSeatPrice updateSeatPrice) {
+    }
 }

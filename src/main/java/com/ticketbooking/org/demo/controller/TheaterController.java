@@ -2,8 +2,10 @@ package com.ticketbooking.org.demo.controller;
 
 
 import com.ticketbooking.org.demo.dto.GetTheater;
+import com.ticketbooking.org.demo.dto.owner.DeleteMovie;
 import com.ticketbooking.org.demo.dto.owner.NewMovieDTO;
 import com.ticketbooking.org.demo.dto.owner.NewTheaterDTO;
+import com.ticketbooking.org.demo.dto.owner.UpdateSeatPrice;
 import com.ticketbooking.org.demo.service.TheaterService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,9 +41,29 @@ public class TheaterController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/name/{nameOfTheater}")
-    public ResponseEntity<List<GetTheater>> getMovie(@PathVariable("nameOfTheater") String  nameOfTheater){
-        return ResponseEntity.ok(theaterService.getTheaters(nameOfTheater));
+    @GetMapping("/all")
+    public ResponseEntity<List<GetTheater>> getAllTheaters(){
+        return ResponseEntity.ok(theaterService.getAllTheater());
     }
+
+    @GetMapping("/name/{nameOfTheater}")
+    public ResponseEntity<List<GetTheater>> getMovieInTheater(@PathVariable("nameOfTheater") String  nameOfTheater){
+        return ResponseEntity.ok(theaterService.getTheaterWithName(nameOfTheater));
+    }
+
+
+    @PatchMapping("/update/movie/price")
+    public ResponseEntity<HttpStatus> updateMoviePrice(@RequestBody UpdateSeatPrice updateSeatPrice){
+        theaterService.updateMoviePrice(updateSeatPrice);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
+    }
+
+    @DeleteMapping("/delete/{movieName}")
+    public ResponseEntity<HttpStatus> deleteMovieFromTheater(@RequestBody DeleteMovie deleteMovie){
+        theaterService.deleteMovieFromTheater(deleteMovie);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 
 }

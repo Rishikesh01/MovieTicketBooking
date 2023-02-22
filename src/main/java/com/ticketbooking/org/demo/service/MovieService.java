@@ -33,6 +33,18 @@ public class MovieService {
         return moviesDTO;
     }
 
+    public List<MoviesDTO> getAllMovies() throws Exception {
+        var movies = Optional.of(movieRepo.findAll()).orElseThrow(() -> new Exception("null"));
+        return movies.stream().map(e->{
+            MoviesDTO moviesDTO = new MoviesDTO();
+            moviesDTO.setId(e.getId());
+            moviesDTO.setName(e.getName());
+            var list = toTheatersDTOS(e.getMovieTheaters(), e);
+            moviesDTO.setTheater(list);
+            return moviesDTO;
+        }).toList();
+    }
+
     private List<TheatersDTO> toTheatersDTOS(List<MovieTheaters> movieTheaters, Movie movie) {
         return movieTheaters.stream().map(e -> {
             var theater = new TheatersDTO();
