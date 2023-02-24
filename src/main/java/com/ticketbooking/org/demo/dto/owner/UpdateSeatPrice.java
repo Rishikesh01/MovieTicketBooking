@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class UpdateSeatPrice {
-    @JsonProperty("theater_id")
-   private int theaterID;
+    @JsonProperty("id")
+   private long id;
    private double price;
 }

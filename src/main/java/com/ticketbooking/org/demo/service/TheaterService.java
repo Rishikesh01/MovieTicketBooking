@@ -74,7 +74,7 @@ public class TheaterService {
     }
 
     public void deleteMovieFromTheater(DeleteMovie deleteMovie){
-
+        movieTheaterRepo.deleteById(deleteMovie.getId());
     }
 
     public void addNewMovie(NewMovieDTO movieDTO) throws Exception {
@@ -168,6 +168,15 @@ public class TheaterService {
     }
 
 
-    public void updateMoviePrice(UpdateSeatPrice updateSeatPrice) {
+    public boolean updateMoviePrice(UpdateSeatPrice updateSeatPrice) {
+        MovieTheaters movie = null;
+        try {
+            movie = movieTheaterRepo.findById(updateSeatPrice.getId()).orElseThrow(()->new Exception("movieTheater is null"));
+        } catch (Exception e) {
+           return  false;
+        }
+        movie.setPrice(updateSeatPrice.getPrice());
+        movieTheaterRepo.save(movie);
+        return true;
     }
 }

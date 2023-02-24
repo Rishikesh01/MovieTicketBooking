@@ -54,12 +54,12 @@ public class TheaterController {
 
     @PatchMapping("/update/movie/price")
     public ResponseEntity<HttpStatus> updateMoviePrice(@RequestBody UpdateSeatPrice updateSeatPrice){
-        theaterService.updateMoviePrice(updateSeatPrice);
-        return ResponseEntity.status(HttpStatus.OK).build();
-
+        if(theaterService.updateMoviePrice(updateSeatPrice))
+            return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    @DeleteMapping("/delete/{movieName}")
+    @DeleteMapping("/delete")
     public ResponseEntity<HttpStatus> deleteMovieFromTheater(@RequestBody DeleteMovie deleteMovie){
         theaterService.deleteMovieFromTheater(deleteMovie);
         return ResponseEntity.status(HttpStatus.OK).build();

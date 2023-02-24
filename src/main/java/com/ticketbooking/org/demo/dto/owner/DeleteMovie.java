@@ -6,9 +6,11 @@ import lombok.Data;
 
 @Data
 public class DeleteMovie {
-    @JsonProperty("movie_id")
-    private int movieID;
-
-    @JsonProperty("theater_id")
-    private int theaterID;
+    @JsonProperty("id")
+    private long id;
+//    @JsonProperty("movie_id")
+//    private int movieID;
+//
+//    @JsonProperty("theater_id")
+//    private int theaterID;
 }
